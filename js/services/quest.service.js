@@ -23,6 +23,8 @@ function getQuestsTree() {
   gPrevQuest = null
 }
 
+
+
 function createQuest(txt) {
   return {
     txt: txt,
