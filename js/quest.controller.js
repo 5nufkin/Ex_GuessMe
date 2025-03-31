@@ -10,7 +10,7 @@ $('.btn-no').click({ ans: 'no' }, onUserResponse)
 $('.btn-add-guess').click(onAddGuess)
 
 function init() {
-  createQuestsTree()
+  getQuestsTree()
 }
 
 function onStartGuessing() {
@@ -57,8 +57,8 @@ function onAddGuess(ev) {
 
 function onRestartGame() {
   $('.new-quest').hide()
-  $('.game-start').show()
   gLastRes = null
   init()
+  $('.game-start').show()
 }
 

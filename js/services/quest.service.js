@@ -4,12 +4,21 @@ var gQuestsTree
 var gCurrQuest
 var gPrevQuest = null
 
-// const STORAGE_KEY = 'QuestTreeDB'
+const STORAGE_KEY = 'QuestTreeDB'
 
-function createQuestsTree() {
-  gQuestsTree = createQuest('Male?')
-  gQuestsTree.yes = createQuest('Gandhi')
-  gQuestsTree.no = createQuest('Rita')
+function getQuestsTree() {
+  gQuestsTree = loadFromStorage(STORAGE_KEY)
+  console.log('gQuestsTree:',gQuestsTree);
+
+  if (!gQuestsTree) {
+    console.log('CREATING MYSELF');
+    
+    gQuestsTree = createQuest('Male?')
+    gQuestsTree.yes = createQuest('Gandhi')
+    gQuestsTree.no = createQuest('Rita')
+    saveToStorage(STORAGE_KEY, gQuestsTree)
+  }
+
   gCurrQuest = gQuestsTree
   gPrevQuest = null
 }
@@ -28,14 +37,28 @@ function isChildless(node) {
 
 function moveToNextQuest(res) {
   gPrevQuest = gCurrQuest
-  gCurrQuest = res==='yes'? gQuestsTree.yes : gQuestsTree.no
+  gCurrQuest = gCurrQuest[res]
 }
 
 function addGuess(newQuestTxt, newGuessTxt, lastRes) {
 
   gPrevQuest[lastRes] = createQuest(newQuestTxt)
+  console.log('gPrevQuest[lastRes]:', gPrevQuest[lastRes]);
+  console.log('newQuestTxt:', newQuestTxt);
+  
+
   gPrevQuest[lastRes].yes = createQuest(newGuessTxt)
-  gPrevQuest[lastRes].no = createQuest(gCurrQuest)
+  console.log('\ngPrevQuest[lastRes].yes:', gPrevQuest[lastRes].yes);
+  console.log('newGuessTxt:',newGuessTxt);
+
+
+  gPrevQuest[lastRes].no = gCurrQuest
+  console.log('\ngPrevQuest[lastRes].no:', gPrevQuest[lastRes].no);
+  console.log('gCurrQuest:',gCurrQuest);
+
+
+  saveToStorage(STORAGE_KEY, gQuestsTree)
+
 }
 
 function getCurrQuest() {
